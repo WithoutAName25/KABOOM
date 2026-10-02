@@ -1,8 +1,10 @@
 local args = { ... }
 local repo = "https://raw.githubusercontent.com/WithoutAName25/KABOOM/"
 local target = "/KABOOM/"
-local manifestRef = args[1] or "main"
 local startupFile = "/startup/KABOOM.lua"
+
+local refOverwrite = args[1]
+local manifestRef = refOverwrite or "main"
 
 local function abort(msg, cleanup)
   error({ abort = true, msg = msg, cleanup = cleanup or false }, 0)
@@ -41,7 +43,7 @@ end
 local function downloadFiles(manifest)
   for _, f in ipairs(manifest.files) do
     print("Downloading " .. f)
-    local data = get(manifest.version, f)
+    local data = get(refOverwrite or manifest.version, f)
     local dest = target .. f
     fs.makeDir(fs.getDir(dest))
     local h = fs.open(dest, "wb")
