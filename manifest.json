@@ -1,6 +1,10 @@
 {
   "version": "v0.1.0",
-  "files": [],
+  "files": [
+    "lib/test.lua",
+    "setup.lua",
+    "startup.lua"
+  ],
   "autostart": "startup.lua",
   "setup": "setup.lua"
 }
