@@ -1,7 +1,12 @@
 {
   "version": "v0.1.0",
   "files": [
-    "lib/test.lua",
+    "lib/menu/dialog.lua",
+    "lib/menu/select.lua",
+    "lib/config.lua",
+    "lib/control.lua",
+    "lib/utils.lua",
+    "run.lua",
     "setup.lua",
     "startup.lua"
   ],

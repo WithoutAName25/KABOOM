@@ -59,7 +59,7 @@ local function configureAutostart(manifest)
   local answer = read()
   if not answer:lower() ~= "n" then
     local h = fs.open(startupFile, "w")
-    h.write(("shell.setDir(%q)\nshell.run(%q)\n"):format(target, target .. manifest.autostart))
+    h.write(("shell.run(%q)\n"):format(target .. manifest.autostart))
   elseif fs.exists(startupFile) then
     fs.delete(startupFile)
   end
@@ -68,7 +68,6 @@ end
 local function runSetup(manifest)
   if not manifest.setup then return end
 
-  shell.setDir(target)
   shell.run(target .. manifest.setup)
 end
 
