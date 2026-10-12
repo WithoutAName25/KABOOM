@@ -138,7 +138,6 @@ local function computeOutput(state, cfg)
 
   local rawCorrectedTarget = targetTemperature + proportionalCorrection + candidateIntegralCorrection
   local correctedTarget = clamp(rawCorrectedTarget, 0, maxTemperature)
-  print(correctedTarget)
   local targetDepletion = equilibriumDepletion(correctedTarget, state.fuelConversionLevel)
 
   local saturatedHigh = temperatureError > 0
