@@ -15,6 +15,10 @@ local definitions = {
 
   { key = "emergencyInput",      name = "emergency.input",             type = "number",  default = 10000000, description = "Input gate rate during emergency" },
 
+  { key = "refuelAutoStart",     name = "refuel.auto_start",           type = "boolean", default = true,     description = "Start automatically after refueling" },
+  { key = "refuelMaxConversion", name = "refuel.max_fuel_conv",        type = "number",  default = 1,        description = "Max fuel conversion (%) needed for automatic restart" },
+  { key = "refuelMinTotalFuel",  name = "refuel.min_total_fuel",       type = "number",  default = 10365,    description = "Total fuel needed for automatic restart" },
+
   { key = "targetTemperature",   name = "param.target_temp",           type = "number",  default = 7000,     description = "Target reactor temperature" },
   { key = "targetFieldStrength", name = "param.target_field_strength", type = "number",  default = 20,       description = "Target field strength (%)" },
   { key = "input",               name = "param.input",                 type = "number",  default = 0,        description = "Manual input gate rate" },

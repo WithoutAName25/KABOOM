@@ -23,6 +23,8 @@ local temperatureController = {
   lastTemperature = nil,
 }
 
+local isRefueling = false;
+
 local function clamp(value, minimum, maximum)
   return math.max(minimum, math.min(value, maximum))
 end
@@ -173,8 +175,29 @@ local function checkEmergency(state, cfg)
   return emergencyState.tempToHigh or emergencyState.fieldToWeak
 end
 
-local function checkFuelDepleted(state, cfg)
-  return state.fuelConversionFraction * 100 > cfg[config.maxFuelConversion]
+local function tickRefueling(state, cfg, reactor)
+  if state == nil then return end
+
+  if state.status == "running" then
+    isRefueling = state.fuelConversionFraction * 100 > cfg[config.maxFuelConversion]
+    if isRefueling then
+      reactor.stopReactor()
+    end
+  end
+
+  if not isRefueling then return end
+  if not cfg[config.refuelAutoStart] then
+    isRefueling = false
+    return
+  end
+
+  if state.fuelConversionFraction * 100 > cfg[config.refuelMaxConversion] or state.maxFuelConversion < cfg[config.refuelMinTotalFuel] then return end
+
+  if state.status == "cold" then
+    reactor.chargeReactor()
+  elseif state.status == "warming_up" and state.temperature >= 2000 then
+    reactor.activateReactor()
+  end
 end
 
 function M.tick(reactor, gateIn, gateOut)
@@ -196,9 +219,7 @@ function M.tick(reactor, gateIn, gateOut)
   gateIn.setOverrideEnabled(emergency)
   gateOut.setOverrideEnabled(emergency)
 
-  if state ~= nil and state.status == "running" and checkFuelDepleted(state, cfg) then
-    reactor.stopReactor()
-  end
+  tickRefueling(state, cfg, reactor)
 
   return state, emergencyState
 end
